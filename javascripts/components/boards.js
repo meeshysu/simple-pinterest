@@ -1,11 +1,13 @@
 import { loadBoards } from '../data/boardsData.js';
+import { initializePinView } from '../components/pins.js';
 
 const bindEvents = () => {//added after, so dynamically onto the page
     $('#user-boards').on('click', '.board-card', (e) => {//board is the parent level of the card
         const clickedBoardId = $(e.target).closest('.board-card').attr('id'); //e.target in a jquery object, but we don't need the image itself so closest. to access the string, you can use .attr with the id of what you want from your JSON file.
         $('#boards-page').hide();//this had a display:none connected to it (html) that enabled it to hide.
         $('#pins-page').show();
-        console.log(clickedBoardId);
+       // console.log(clickedBoardId);
+       initializePinView(clickedBoardId);
     })
 }
 
