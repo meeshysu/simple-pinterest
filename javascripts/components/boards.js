@@ -1,4 +1,5 @@
 import { loadBoards } from '../data/boardsData.js';
+import { loadPinsOnBoards } from '../data/pinsData.js';
 import { initializePinView } from '../components/pins.js';
 
 const bindEvents = () => {//added after, so dynamically onto the page
@@ -14,12 +15,13 @@ const bindEvents = () => {//added after, so dynamically onto the page
 const writeBoards = (boards) => {
     let domString = '';
     boards.forEach(board => {
+        const boardImg = board.pins[0] ? board.pins[0].image_url : './db/default-img.jpeg';
         domString += `
     <div id='${board.id}' class="board-card p-2">
-            <img class="card-img-top" src="./db/default-img.jpeg" alt="Card image cap">
+            <img class="card-img-top" src="${boardImg}" alt="Card image cap">
         <div class="card-body">
           <h5 class="card-title">${board.name}</h5>
-          <p class="card-text">42 Pins</p>
+          <p class="card-text">${board.pins.length}</p>
         </div>
     </div>
         `
@@ -30,8 +32,12 @@ const writeBoards = (boards) => {
 const initializeBoardView = () => {
     loadBoards().then((boards) => {
         //console.log('inside the .then');
-        writeBoards(boards);//this to execute
-        bindEvents();//and this next to execute
+        // writeBoards(boards);//this to execute
+        // bindEvents();//and this next to execute
+        return loadPinsOnBoards(boards); //going to return the second promise function (function that holds the second promise). below we then chain a .then method.
+    }).then((boardsWithPins) => {
+        writeBoards(boardsWithPins);
+        bindEvents();
     }).catch((error) => {
         console.error(error);
     })

@@ -1,8 +1,15 @@
 import { loadPinsForBoard } from '../data/pinsData.js';
 
 const shortenLink = (full_url) => {
-    const hostname = new URL(full_url).hostname; //this is shortening that big ass link in the pins.json. .hostname cuts it down. 
+    const hostname = new URL(full_url).hostname; //this is shortening that big ass link in the pins.json. .hostname cuts it down. that way you don't have to write a looping function - they all start differently, like www. http, etc. 
     return hostname;
+}
+
+const bindEvents = () => {
+    $('#toBoardsBtn').click(() => {
+        $('#pins-page').hide();
+        $('#boards-page').show();
+    })
 }
 
 const writePins = (pins) => {
@@ -25,6 +32,7 @@ const initializePinView = (boardId) => {
     loadPinsForBoard(boardId)
     .then(data => {
     writePins(data);
+    bindEvents();
     })
     .catch(error => {
         console.error('things messed up in pins yo', error)
