@@ -14,14 +14,14 @@ const loadPinsForBoard = (boardId) => { //this is for a single board
 };
 
 
-const loadPinsOnBoards = (boards) => {
+const loadPinsOnBoards = (boards) => { //boards is coming in from loadboards, which is the first promise that came from boards.js. 
     return new Promise((resolve, reject) => {
         $.get('../db/pins.json')
-        .done((data) => {
+        .done((data) => { //data came back from pins.json. in an array of objects - though it's a key. 
             const boardsWithPins = boards.map(board => { //want to find the matching pins. and bc all we want are the pins, we need to do filtering on the pins. data.pins gives you an array of objects. the filter method, then on it. will expose one pin and explicitly return if it matches. pin.board_id = board id. 
                 const matchingPins = data.pins.filter(pin => pin.board_id  === board.id);// now below we want to add the pins to the board.
                 board.pins = matchingPins; //have your board object as you want it to be. so gotta return out the board.
-                return board; //this will return out this board back to the boardswithpins variable. after map runs, it will be an array of objects with manipulated boards. 
+                return board; //this will return out this board back to the boardswithpins variable. after map runs, it will be an array of objects with manipulated boards < filter equals array.
             })
             resolve(boardsWithPins);
         })
